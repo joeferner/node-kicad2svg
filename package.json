@@ -1,0 +1,23 @@
+{
+  "name": "kicad2svg",
+  "version": "0.0.1",
+  "description": "Converts KiCad files to SVGs",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/nodeunit test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joeferner/node-kicad2svg.git"
+  },
+  "keywords": [
+    "kicad",
+    "svg",
+    "convert"
+  ],
+  "author": "Joe Ferner <joe@fernsroth.com>",
+  "license": "MIT",
+  "dependencies": {
+    "nodeunit": "~0.7.4"
+  }
+}
