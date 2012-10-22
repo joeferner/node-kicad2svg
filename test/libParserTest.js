@@ -23,7 +23,7 @@ module.exports = {
   testParse: function(test) {
     var json = libParser(this.deviceLibData);
 
-    //console.log(JSON.stringify(json.symbols[0], null, '  '));
+    //console.log(JSON.stringify(json.symbols['7SEGM'], null, '  '));
     test.equal(Object.keys(json.symbols).length, 81);
     test.equal(json.symbols['7SEGM'].draw.length, 13);
     test.done();
