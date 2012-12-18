@@ -37,7 +37,7 @@ module.exports = {
     var json = kicad2svg.modParser(this.diversModData);
     var svg = kicad2svg.modToSvg(json.modules['BUZZER']);
 
-    console.log(svg);
+    //console.log(svg);
     test.ok(svg.indexOf('svg') > 0);
     test.done();
   }
