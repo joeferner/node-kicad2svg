@@ -14,7 +14,14 @@ module.exports = {
         return callback(err);
       }
       self.deviceModData = data;
-      return callback();
+
+      return fs.readFile(path.join(__dirname, 'divers.mod'), 'utf8', function(err, data) {
+        if (err) {
+          return callback(err);
+        }
+        self.diversModData = data;
+        return callback();
+      });
     });
   },
 
@@ -22,6 +29,15 @@ module.exports = {
     var json = kicad2svg.modParser(this.deviceModData);
     var svg = kicad2svg.modToSvg(json.modules['LM78XX']);
 
+    test.ok(svg.indexOf('svg') > 0);
+    test.done();
+  },
+
+  testParseUnitsMm: function(test) {
+    var json = kicad2svg.modParser(this.diversModData);
+    var svg = kicad2svg.modToSvg(json.modules['BUZZER']);
+
+    console.log(svg);
     test.ok(svg.indexOf('svg') > 0);
     test.done();
   }

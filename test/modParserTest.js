@@ -16,7 +16,21 @@ module.exports = {
         return callback(err);
       }
       self.discretModData = data;
-      return callback();
+
+      return fs.readFile(path.join(__dirname, 'discret-with-units.mod'), 'utf8', function(err, data) {
+        if (err) {
+          return callback(err);
+        }
+        self.discretModDataWithUnits = data;
+
+        return fs.readFile(path.join(__dirname, 'divers.mod'), 'utf8', function(err, data) {
+          if (err) {
+            return callback(err);
+          }
+          self.diversMod = data;
+          return callback();
+        });
+      });
     });
   },
 
@@ -27,6 +41,28 @@ module.exports = {
     test.equal(Object.keys(json.modules).length, 107);
     test.equal(json.modules['C1'].draw.length, 5);
     test.equal(json.modules['C1'].pads.length, 2);
+    test.done();
+  },
+
+  testParseWithUnits: function(test) {
+    var json = modParser(this.discretModDataWithUnits);
+
+    //console.log(JSON.stringify(json.modules['C1'], null, '  '));
+    test.equal(Object.keys(json.modules).length, 107);
+    test.equal(json.modules['C1'].draw.length, 5);
+    test.equal(json.modules['C1'].pads.length, 2);
+    test.equal(json.modules['C1'].pads[0].size.x, 550);
+    test.equal(json.modules['C1'].units, 'deci-mils');
+    test.done();
+  },
+
+  testParseDivers: function(test) {
+    var json = modParser(this.diversMod);
+
+    //console.log(JSON.stringify(json.modules['BUZZER'], null, '  '));
+    test.equal(Object.keys(json.modules).length, 18);
+    test.equal(json.modules['BUZZER'].pads[0].size.x, 2.49936);
+    test.equal(json.modules['BUZZER'].units, 'mm');
     test.done();
   },
 
