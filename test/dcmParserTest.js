@@ -3,7 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
-var libParser = require('..').libParser;
+var dcmParser = require('..').dcmParser;
 
 var libraryDir = '/usr/share/kicad/library/';
 
@@ -11,27 +11,30 @@ module.exports = {
   setUp: function(callback) {
     var self = this;
 
-    fs.readFile(path.join(__dirname, 'device.lib'), 'utf8', function(err, data) {
+    fs.readFile(path.join(__dirname, 'linear.dcm'), 'utf8', function(err, data) {
       if (err) {
         return callback(err);
       }
-      self.deviceLibData = data;
+      self.deviceDcmData = data;
       return callback();
     });
   },
 
   testParse: function(test) {
-    var json = libParser(this.deviceLibData);
+    var json = dcmParser(this.deviceDcmData);
 
-    //console.log(JSON.stringify(json.symbols['7SEGM'], null, '  '));
-    test.equal(Object.keys(json.symbols).length, 81);
-    test.equal(json.symbols['7SEGM'].draw.length, 13);
+    //console.log(JSON.stringify(json, null, '  '));
+    test.equal(Object.keys(json.symbols).length, 43);
+    test.equal(json.symbols['CA3130'].description, 'Ampli Op Mos');
+    test.equal(json.symbols['CA3130'].keywords.length, 2);
+    test.equal(json.symbols['CA3130'].keywords[0], "AmpliOp");
+    test.equal(json.symbols['CA3130'].keywords[1], "Mos");
     test.done();
   },
 
-  testParseAllLibs: function(test) {
+  testParseAllDcms: function(test) {
     if (!fs.existsSync(libraryDir)) {
-      console.log("Skipping testParseAllLibs could not find " + libraryDir);
+      console.log("Skipping testParseAllDcms could not find " + libraryDir);
       return test.done();
     }
 
@@ -40,7 +43,7 @@ module.exports = {
         return test.done(err);
       }
       return async.forEachSeries(files, function(file, callback) {
-        if (!/\.lib$/.test(file)) {
+        if (!/\.dcm/.test(file)) {
           return callback();
         }
         var filename = path.join(libraryDir, file);
@@ -50,7 +53,7 @@ module.exports = {
             return test.done(err);
           }
           try {
-            var json = libParser(data);
+            var json = dcmParser(data);
           } catch (ex) {
             console.error(ex);
             test.done(err);

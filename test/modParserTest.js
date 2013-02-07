@@ -5,7 +5,7 @@ var path = require('path');
 var async = require('async');
 var modParser = require('../').modParser;
 
-var moduleDir = '/opt/kicad/share/modules';
+var moduleDir = '/usr/share/kicad/modules/';
 
 module.exports = {
   setUp: function(callback) {
