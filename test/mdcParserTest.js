@@ -24,8 +24,8 @@ module.exports = {
     var json = mdcParser(this.deviceMdcData);
 
     //console.log(JSON.stringify(json, null, '  '));
-    test.equal(Object.keys(json.symbols).length, 17);
-    test.equal(json.symbols['eDIP-12'].description, 'eDIP-12 Flat Package with Heatsink Tab');
+    test.equal(Object.keys(json.modules).length, 17);
+    test.equal(json.modules['eDIP-12'].description, 'eDIP-12 Flat Package with Heatsink Tab');
     test.done();
   },
 
